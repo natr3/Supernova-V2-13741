@@ -1,121 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apps</title> <!-- change this to ur title of the tab -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #6a4c9c;
-            color: white;
-        }
-        header {
-            background-color: #5e3b8f;
-            color: white;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: flex-end;
-        }
-        header button {
-            background-color: #7f5f9f;
-            border: none;
-            padding: 10px 20px;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-left: 20px;
-        }
-        header button:hover {
-            background-color: #9b6fcf;
-        }
-        .section {
-            padding: 40px;
-            text-align: center;
-            background-color: #7f5f9f;
-        }
-        .app-card {
-            display: inline-block;
-            width: 200px;
-            height: 250px;
-            background-color: #8e6ba7;
-            margin: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            color: white;
-            text-align: center;
-        }
-        .app-card img {
-            width: 100%;
-            height: 160px;
-            border-radius: 10px 10px 0 0;
-        }
-        .app-card h3 {
-            margin-top: 10px;
-        }
-        footer {
-            background-color: #5e3b8f;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-        }
-        iframe.fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            z-index: 1000;
-        }
-    </style>
-    <script>
-        function openFullscreen(url) {
-            const iframe = document.createElement('iframe');
-            iframe.src = url;
-            iframe.className = 'fullscreen';
-            iframe.setAttribute('allowfullscreen', '');
-            document.body.appendChild(iframe);
-
-            iframe.onclick = () => {
-                iframe.remove(); // closes iframe on click, delete if not wanted
-            };
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100c12">
+  <meta name="description" content="natr — your games, apps, sounds, and little corners of the internet.">
+  <title>natr</title>
+  <link rel="icon" href="/assets/natr.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
 </head>
 <body>
-    <header>
-        <button onclick="location.href='index.html'">Games</button>
-        <button onclick="location.href='apps.html'">Apps</button>
+  <div id="background" aria-hidden="true"><div id="custom-background"></div><div class="wave wave-one"></div><div class="wave wave-two"></div></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <aside class="sidebar" aria-label="Main navigation">
+    <a class="brand" href="#home" aria-label="natr home">n<span>·</span></a>
+    <nav id="navigation"></nav>
+    <button class="nav-button" id="mute-button" title="Mute soundboard" aria-label="Mute soundboard"><i data-lucide="volume-2"></i></button>
+  </aside>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="wordmark" href="#home">natr<span> / </span><small id="section-name">home</small></a>
+      <div class="topbar-actions"><span id="sync-state" class="sync-state">Connecting library</span><button class="subtle-button" id="cloak-button" title="Tab cloaking" aria-label="Tab cloaking"><i data-lucide="monitor"></i><span>Cloak</span></button><button class="subtle-button" id="cover-button" title="Show blocked-page cover" aria-label="Show blocked-page cover"><i data-lucide="square"></i><span>Cover</span></button><button class="subtle-button" id="account-button"><i data-lucide="user-round"></i><span>Sign in</span></button></div>
     </header>
-    <div class="section">
-        <h2>Full-Screen Apps</h2>
-        <div class="app-card" onclick="openFullscreen('https://web.whatsapp.com/')">
-            <img src="https://via.placeholder.com/200x160" alt="WhatsApp Web">
-            <h3>WhatsApp Web</h3>
-        </div>
-        <div class="app-card" onclick="openFullscreen('https://discord.com/app')">
-            <img src="https://via.placeholder.com/200x160" alt="Discord">
-            <h3>Discord</h3>
-        </div>
-        <div class="app-card" onclick="openFullscreen('https://www.youtube.com/')">
-            <img src="https://via.placeholder.com/200x160" alt="YouTube">
-            <h3>YouTube</h3>
-        </div>
-        <div class="app-card" onclick="openFullscreen('https://www.openai.com/chatgpt')">
-            <img src="https://via.placeholder.com/200x160" alt="ChatGPT">
-            <h3>ChatGPT</h3>
-        </div>
-        <div class="app-card" onclick="openFullscreen('https://www.google.com/drive/')">
-            <img src="https://via.placeholder.com/200x160" alt="Google Drive">
-            <h3>Google Drive</h3>
-        </div>
+    <main id="main" tabindex="-1"></main>
+    <footer><span>natr <span class="footer-dot">·</span> your little corner of the internet</span><span id="footer-date"></span></footer>
+  </div>
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <button id="restore-player" class="primary restore-player" hidden><i data-lucide="maximize-2"></i>Return to app</button>
+  <dialog id="add-dialog" class="form-dialog">
+    <form id="add-form">
+      <div class="dialog-heading"><span class="eyebrow">GROW YOUR COLLECTION</span><button type="button" class="icon-button" data-close="add-dialog" aria-label="Close"><i data-lucide="x"></i></button></div>
+      <h2 id="add-title">Add a game</h2><p>Paste a link. Give it a name. Keep it here.</p>
+      <label>Game or website link<input name="url" type="url" placeholder="https://example.com/game" required maxlength="2048" autocomplete="url"></label>
+      <label>Name <span class="muted">(optional)</span><input name="title" maxlength="80" placeholder="Your new favorite"></label>
+      <fieldset><legend>Save to</legend><label class="radio-option"><input type="radio" name="visibility" value="public" checked><span>Community library<small>Visible to everyone visiting natr.</small></span></label><label class="radio-option"><input type="radio" name="visibility" value="private"><span>My private library<small>Only you, on any device. Sign-in required.</small></span></label></fieldset>
+      <p id="add-error" class="error" role="alert"></p><button class="primary full-width" type="submit">Add game <i data-lucide="plus"></i></button>
+    </form>
+  </dialog>
+  <dialog id="auth-dialog" class="form-dialog"><div id="auth-content"></div></dialog>
+  <dialog id="cloak-dialog" class="form-dialog" aria-labelledby="cloak-heading"><form id="cloak-form"></form></dialog>
+  <dialog id="privacy-cover" class="privacy-cover" aria-labelledby="cover-heading">
+    <div class="cover-top"><span class="cover-mark">s<span>•</span></span><span>Web access</span></div>
+    <div class="cover-content"><div class="cover-shield"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4l17 7v13c0 11-17 21-17 21S7 35 7 24V11z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M18 18l12 12m0-12L18 30" stroke="currentColor" stroke-width="3"/></svg></div><h1 id="cover-heading">This website is blocked.</h1><p>The page you’re trying to reach is unavailable.</p><div class="cover-details"><span>Website</span><strong id="cover-host"></strong><span>Category</span><strong>Games & entertainment</strong></div><p class="cover-help">You can close this tab or return to your previous page.</p></div>
+    <div class="cover-bottom"><span>Privacy cover <span class="cover-separator">/</span> <span id="cover-shortcut"></span></span><button id="reveal-button" type="button">Return to natr</button></div>
+  </dialog>
+  <dialog id="player" class="player-dialog" aria-label="In-app player">
+    <div class="player-window"><div class="player-screen" id="player-screen"></div>
+      <div class="player-toolbar"><div class="toolbar-group"><button id="minimize-player" class="icon-button" title="Minimize" aria-label="Minimize app"><i data-lucide="panel-bottom-close"></i></button><a id="player-original" class="icon-button" target="_blank" rel="noopener noreferrer" title="Open original website" aria-label="Open original website"><i data-lucide="external-link"></i></a></div><strong id="player-title"></strong><div class="toolbar-group"><button id="reload-player" class="icon-button" title="Reload app" aria-label="Reload app"><i data-lucide="rotate-cw"></i></button><button class="icon-button" data-action="show-cover" title="Show privacy cover" aria-label="Show privacy cover"><i data-lucide="square"></i></button><button id="fullscreen-player" class="icon-button" title="Fullscreen" aria-label="Fullscreen"><i data-lucide="expand"></i></button><button id="close-player" class="icon-button" title="Close app" aria-label="Close app"><i data-lucide="x"></i></button></div></div>
+      <p class="player-hint"><button class="embed-help" data-action="embed-help">Player not loading?</button> Some sites restrict embeds. <a id="player-fallback" target="_blank" rel="noopener noreferrer">Open the original website ↗</a></p>
     </div>
-    <footer>
-        <p>&copy; 2024 insert website name</p>
-    </footer>
+  </dialog>
+  <noscript><p class="noscript">Enable JavaScript to browse natr and open the game library.</p></noscript>
 </body>
 </html>
